@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>המילון של שפת התיילו 🍼</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(135deg,#fff5fa,#f1f7ff);
+color:#333;
+}
+
+header{
+background:white;
+text-align:center;
+padding:25px 15px 20px;
+box-shadow:0 3px 15px rgba(0,0,0,.08);
+}
+
+.baby-photo{
+width:155px;
+height:155px;
+object-fit:cover;
+border-radius:50%;
+border:5px solid #ffd4e6;
+box-shadow:0 5px 20px rgba(0,0,0,.12);
+}
+
+h1{
+color:#e45796;
+font-size:30px;
+margin:15px 0 5px;
+}
+
+.subtitle{
+color:#777;
+}
+
+.tabs{
+position:sticky;
+top:0;
+z-index:20;
+background:white;
+display:flex;
+justify-content:center;
+gap:7px;
+padding:10px;
+box-shadow:0 2px 10px rgba(0,0,0,.08);
+flex-wrap:wrap;
+}
+
+.tab{
+border:0;
+border-radius:25px;
+padding:11px 16px;
+font-size:15px;
+background:#eee;
+cursor:pointer;
+}
+
+.tab.active{
+background:#e45796;
+color:white;
+}
+
+.container{
+max-width:760px;
+margin:auto;
+padding:18px;
+}
+
+.page{
+display:none;
+}
+
+.page.active{
+display:block;
+}
+
+.search,
+input{
+width:100%;
+padding:14px;
+border:2px solid #eee;
+border-radius:14px;
+font-size:17px;
+background:white;
+}
+
+.search{
+margin-bottom:15px;
+}
+
+.card,
+.box{
+background:white;
+border-radius:20px;
+padding:18px;
+margin-bottom:14px;
+box-shadow:0 4px 16px rgba(0,0,0,.06);
+}
+
+.word{
+font-size:28px;
+font-weight:bold;
+color:#e45796;
+}
+
+.meaning{
+font-size:20px;
+margin-top:6px;
+}
+
+.meta{
+font-size:13px;
+color:#999;
+margin-top:8px;
+}
+
+label{
+display:block;
+font-weight:bold;
+margin:15px 0 7px;
+}
+
+button{
+cursor:pointer;
+}
+
+.main-btn{
+width:100%;
+border:0;
+border-radius:15px;
+padding:15px;
+margin-top:15px;
+font-size:18px;
+font-weight:bold;
+background:#e45796;
+color:white;
+}
+
+.gray-btn{
+background:#eee;
+color:#333;
+}
+
+.delete-btn{
+border:0;
+background:#ffe3e3;
+color:#c62828;
+border-radius:10px;
+padding:8px 12px;
+margin-top:12px;
+}
+
+.audio{
+width:100%;
+margin-top:12px;
+}
+
+.status{
+text-align:center;
+min-height:25px;
+margin:10px 0;
+}
+
+.empty{
+text-align:center;
+padding:35px;
+color:#888;
+}
+
+.quiz{
+text-align:center;
+}
+
+.quiz-word{
+font-size:42px;
+font-weight:bold;
+color:#e45796;
+margin:25px 0;
+}
+
+.answer{
+display:block;
+width:100%;
+border:0;
+border-radius:14px;
+padding:15px;
+margin:8px 0;
+font-size:17px;
+background:#f1f1f1;
+}
+
+.answer:hover{
+background:#ffe0ed;
+}
+
+.score{
+font-size:20px;
+font-weight:bold;
+}
+
+.badge{
+display:inline-block;
+margin-top:10px;
+padding:8px 14px;
+border-radius:20px;
+background:#fff0a8;
+}
+
+.success{
+color:#2e7d32;
+font-weight:bold;
+}
+
+.error{
+color:#c62828;
+font-weight:bold;
+}
+
+footer{
+text-align:center;
+padding:30px;
+color:#999;
+}
+
+.debug{
+font-size:12px;
+color:#888;
+word-break:break-word;
+margin-top:8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<img
+class="baby-photo"
+src="IMG-20260928-WA0073_3.jpg"
+alt="תיילו"
+onerror="this.style.display='none'"
+>
+
+<h1>
+המילון של שפת התיילו 🍼
+</h1>
+
+<div class="subtitle">
+המילון המשפחתי הרשמי של תיילו ❤️
+</div>
+
+</header>
+
+
+<nav class="tabs">
+
+<button
+class="tab active"
+onclick="showPage('dictionary',this)">
+📖 מילון
+</button>
+
+<button
+class="tab"
+onclick="showPage('add',this)">
+➕ הוספת מילה
+</button>
+
+<button
+class="tab"
+onclick="showPage('quiz',this)">
+🧠 חידון
+</button>
+
+<button
+class="tab"
+onclick="showPage('about',this)">
+❤️ על המילון
+</button>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- ================= מילון ================= -->
+
+<section
+id="dictionary"
+class="page active">
+
+<input
+id="search"
+class="search"
+placeholder="🔎 חיפוש במילון..."
+oninput="renderWords()"
+>
+
+<div
+id="loading"
+class="status">
+☁️ מתחבר למילון המשפחתי...
+</div>
+
+<div id="wordList"></div>
+
+</section>
+
+
+<!-- ================= הוספה ================= -->
+
+<section
+id="add"
+class="page">
+
+<div class="box">
+
+<h2>
+➕ הוספת מילה חדשה
+</h2>
+
+<p>
+כל המשפחה יכולה להוסיף כאן מילים חדשות לשפת התיילו ❤️
+</p>
+
+<label>
+🍼 איך תיילו אומר?
+</label>
+
+<input
+id="babyWord"
+placeholder="לדוגמה: טיטו"
+>
+
+<label>
+💬 מה זה אומר?
+</label>
+
+<input
+id="meaning"
+placeholder="לדוגמה: חתול"
+>
+
+<label>
+🔊 הקלטה
+</label>
+
+<button
+id="recordButton"
+class="main-btn gray-btn"
+onclick="toggleRecording()">
+🎙️ התחל הקלטה
+</button>
+
+<div
+id="recordStatus"
+class="status">
+</div>
+
+<audio
+id="audioPreview"
+class="audio"
+controls
+style="display:none">
+</audio>
+
+<button
+class="main-btn"
+onclick="addWord()">
+❤️ הוסף למילון המשפחתי
+</button>
+
+<div
+id="addStatus"
+class="status">
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= חידון ================= -->
+
+<section
+id="quiz"
+class="page">
+
+<div class="box quiz">
+
+<div class="score">
+
+🏆 ניקוד:
+<span id="score">
+0
+</span>
+
+</div>
+
+<div
+id="badge"
+class="badge">
+🍼 מתחילים
+</div>
+
+<p>
+מה הפירוש של המילה?
+</p>
+
+<div
+id="quizWord"
+class="quiz-word">
+טוען...
+</div>
+
+<div id="answers"></div>
+
+<button
+class="main-btn"
+onclick="newQuiz()">
+🔄 שאלה חדשה
+</button>
+
+</div>
+
+</section>
+
+
+<!-- ================= אודות ================= -->
+
+<section
+id="about"
+class="page">
+
+<div class="box">
+
+<h2>
+❤️ המילון של שפת התיילו
+</h2>
+
+<p>
+ברוכים הבאים למילון המשפחתי של תיילו!
+</p>
+
+<p>
+כאן אנחנו שומרים את כל המילים המיוחדות
+שתיילו המציאה או משתמשת בהן.
+</p>
+
+<p>
+☁️ המילים נשמרות בענן,
+ולכן כל בני המשפחה יכולים לראות אותן.
+</p>
+
+<p>
+👨‍👩‍👧‍👦 אחד מוסיף — כולם רואים.
+</p>
+
+<p>
+🧠 אפשר גם לבדוק את עצמכם בחידון.
+</p>
+
+<p>
+🏆 וצוברים נקודות על תשובות נכונות.
+</p>
+
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+המילון של תיילו ❤️
+</footer>
+
+
+<script>
+
+/* =====================================================
+   SUPABASE
+   ===================================================== */
+
+const SUPABASE_URL =
+"https://okvdxmkpmhayvwdhjhmy.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_0Iq5b1LQIKbOIs9RguNujw_EcJvVKpI";
+
+const API_URL =
+SUPABASE_URL + "/rest/v1/words";
+
+
+/* =====================================================
+   משתנים
+   ===================================================== */
+
+let words = [];
+
+let score = 0;
+
+let mediaRecorder = null;
+
+let audioChunks = [];
+
+let recordedAudio = null;
+
+
+/* =====================================================
+   headers
+   ===================================================== */
+
+function getHeaders(){
+
+return {
+
+"apikey":SUPABASE_KEY,
+
+"Content-Type":"application/json",
+
+"Accept":"application/json"
+
+};
+
+}
+
+
+/* =====================================================
+   טעינת המילים
+   ===================================================== */
+
+async function loadWords(){
+
+const loading =
+document.getElementById("loading");
+
+loading.innerHTML =
+"☁️ מתחבר למילון המשפחתי...";
+
+
+try{
+
+const response =
+await fetch(
+API_URL +
+"?select=*&order=created_at.asc",
+{
+method:"GET",
+headers:getHeaders()
+}
+);
+
+
+const responseText =
+await response.text();
+
+
+if(!response.ok){
+
+console.error(
+"Supabase error:",
+response.status,
+responseText
+);
+
+loading.innerHTML =
+
+'<span class="error">' +
+
+"❌ לא ניתן לטעון את המילון" +
+
+"<br>" +
+
+"<small>שגיאה " +
+response.status +
+"</small>" +
+
+'<div class="debug">' +
+
+escapeHtml(responseText) +
+
+"</div>" +
+
+"</span>";
+
+return;
+
+}
+
+
+try{
+
+words =
+JSON.parse(responseText);
+
+}catch(error){
+
+words=[];
+
+}
+
+
+if(!Array.isArray(words)){
+
+words=[];
+
+}
+
+
+loading.textContent="";
+
+renderWords();
+
+newQuiz();
+
+
+}catch(error){
+
+console.error(error);
+
+loading.innerHTML =
+
+'<span class="error">' +
+
+"❌ לא ניתן לטעון את המילון" +
+
+"<br><small>" +
+
+escapeHtml(error.message) +
+
+"</small>" +
+
+"</span>";
+
+}
+
+}
+
+
+/* =====================================================
+   הצגת מילים
+   ===================================================== */
+
+function renderWords(){
+
+const list =
+document.getElementById("wordList");
+
+const search =
+document
+.getElementById("search")
+.value
+.trim()
+.toLowerCase();
+
+
+const filtered =
+words.filter(function(item){
+
+const baby =
+String(
+item.baby_word || ""
+)
+.toLowerCase();
+
+const meaning =
+String(
+item.meaning || ""
+)
+.toLowerCase();
+
+return (
+baby.includes(search) ||
+meaning.includes(search)
+);
+
+});
+
+
+if(filtered.length===0){
+
+list.innerHTML =
+
+'<div class="empty">' +
+
+(
+search
+?
+"לא נמצאה מילה כזאת 🔎"
+:
+"עדיין אין מילים במילון 🍼"
+)
+
++
+
+"</div>";
+
+return;
+
+}
+
+
+list.innerHTML =
+filtered.map(function(item){
+
+let audio="";
+
+
+if(item.audio_url){
+
+audio =
+
+'<audio class="audio" controls src="' +
+
+escapeAttribute(
+item.audio_url
+)
+
++
+
+'"></audio>';
+
+}
+
+
+return `
+
+<div class="card">
+
+<div class="word">
+
+${escapeHtml(item.baby_word)}
+
+</div>
+
+<div class="meaning">
+
+= ${escapeHtml(item.meaning)}
+
+</div>
+
+<div class="meta">
+
+המילון המשפחתי ❤️
+
+</div>
+
+${audio}
+
+<button
+class="delete-btn"
+onclick="deleteWord('${escapeAttribute(item.id)}')">
+
+🗑️ מחיקה
+
+</button>
+
+</div>
+
+`;
+
+}).join("");
+
+}
+
+
+/* =====================================================
+   הוספת מילה
+   ===================================================== */
+
+async function addWord(){
+
+const babyWord =
+document
+.getElementById("babyWord")
+.value
+.trim();
+
+
+const meaning =
+document
+.getElementById("meaning")
+.value
+.trim();
+
+
+const status =
+document.getElementById("addStatus");
+
+
+if(!babyWord || !meaning){
+
+status.innerHTML =
+
+'<span class="error">' +
+
+"⚠️ צריך למלא גם מילה וגם פירוש"
+
++
+
+"</span>";
+
+return;
+
+}
+
+
+status.textContent =
+"☁️ שומר במילון המשפחתי...";
+
+
+try{
+
+const body = {
+
+baby_word:babyWord,
+
+meaning:meaning,
+
+audio_url:recordedAudio
+
+};
+
+
+const response =
+await fetch(
+API_URL,
+{
+method:"POST",
+
+headers:{
+...getHeaders(),
+
+"Prefer":
+"return=representation"
+},
+
+body:JSON.stringify(body)
+
+}
+);
+
+
+const responseText =
+await response.text();
+
+
+if(!response.ok){
+
+console.error(
+response.status,
+responseText
+);
+
+status.innerHTML =
+
+'<span class="error">' +
+
+"❌ השמירה נכשלה" +
+
+"<br><small>" +
+
+"HTTP " +
+response.status +
+
+"</small>" +
+
+'<div class="debug">' +
+
+escapeHtml(responseText) +
+
+"</div>" +
+
+"</span>";
+
+return;
+
+}
+
+
+let newRows=[];
+
+try{
+
+newRows =
+JSON.parse(responseText);
+
+}catch(error){
+
+newRows=[];
+
+}
+
+
+if(
+Array.isArray(newRows) &&
+newRows.length>0
+){
+
+words.push(
+newRows[0]
+);
+
+}else{
+
+await loadWords();
+
+}
+
+
+document
+.getElementById("babyWord")
+.value="";
+
+
+document
+.getElementById("meaning")
+.value="";
+
+
+recordedAudio=null;
+
+
+const preview =
+document.getElementById("audioPreview");
+
+
+preview.pause();
+
+preview.src="";
+
+preview.style.display="none";
+
+
+document
+.getElementById("recordStatus")
+.textContent="";
+
+
+status.innerHTML =
+
+'<span class="success">' +
+
+"🎉 המילה נשמרה לכל המשפחה!"
+
++
+
+"</span>";
+
+
+renderWords();
+
+
+setTimeout(function(){
+
+status.textContent="";
+
+},4000);
+
+
+}catch(error){
+
+console.error(error);
+
+status.innerHTML =
+
+'<span class="error">' +
+
+"❌ אירעה שגיאה בשמירה" +
+
+"<br>" +
+
+escapeHtml(error.message) +
+
+"</span>";
+
+}
+
+}
+
+
+/* =====================================================
+   מחיקת מילה
+   ===================================================== */
+
+async function deleteWord(id){
+
+const item =
+words.find(function(word){
+
+return String(word.id) ===
+String(id);
+
+});
+
+
+if(!item){
+
+return;
+
+}
+
+
+if(
+!confirm(
+'למחוק את "' +
+item.baby_word +
+'" מהמילון?'
+)
+){
+
+return;
+
+}
+
+
+try{
+
+const response =
+await fetch(
+
+API_URL +
+"?id=eq." +
+encodeURIComponent(id),
+
+{
+method:"DELETE",
+
+headers:{
+...getHeaders(),
+
+"Prefer":
+"return=minimal"
+}
+
+}
+);
+
+
+const responseText =
+await response.text();
+
+
+if(!response.ok){
+
+console.error(
+response.status,
+responseText
+);
+
+alert(
+"❌ המחיקה נכשלה\n" +
+responseText
+);
+
+return;
+
+}
+
+
+words =
+words.filter(function(word){
+
+return String(word.id) !==
+String(id);
+
+});
+
+
+renderWords();
+
+newQuiz();
+
+
+}catch(error){
+
+console.error(error);
+
+alert(
+"❌ אירעה שגיאה במחיקה"
+);
+
+}
+
+}
+
+
+/* =====================================================
+   הקלטה
+   ===================================================== */
+
+async function toggleRecording(){
+
+const button =
+document.getElementById(
+"recordButton"
+);
+
+const status =
+document.getElementById(
+"recordStatus"
+);
+
+
+if(
+mediaRecorder &&
+mediaRecorder.state ===
+"recording"
+){
+
+mediaRecorder.stop();
+
+button.textContent =
+"🎙️ התחל הקלטה";
+
+return;
+
+}
+
+
+if(
+!navigator.mediaDevices ||
+!navigator.mediaDevices.getUserMedia
+){
+
+status.innerHTML =
+
+'<span class="error">' +
+
+"❌ ההקלטה תעבוד כאשר האתר יהיה באינטרנט."
+
++
+
+"</span>";
+
+return;
+
+}
+
+
+try{
+
+const stream =
+await navigator.mediaDevices.getUserMedia(
+{
+audio:true
+}
+);
+
+
+audioChunks=[];
+
+
+mediaRecorder =
+new MediaRecorder(stream);
+
+
+mediaRecorder.ondataavailable =
+function(event){
+
+if(event.data.size>0){
+
+audioChunks.push(
+event.data
+);
+
+}
+
+};
+
+
+mediaRecorder.onstop =
+function(){
+
+const blob =
+new Blob(
+audioChunks,
+{
+type:"audio/webm"
+}
+);
+
+
+const reader =
+new FileReader();
+
+
+reader.onloadend =
+function(){
+
+recordedAudio =
+reader.result;
+
+
+const preview =
+document.getElementById(
+"audioPreview"
+);
+
+
+preview.src =
+recordedAudio;
+
+
+preview.style.display =
+"block";
+
+};
+
+
+reader.readAsDataURL(blob);
+
+
+stream
+.getTracks()
+.forEach(function(track){
+
+track.stop();
+
+});
+
+};
+
+
+mediaRecorder.start();
+
+
+button.textContent =
+"⏹️ עצור הקלטה";
+
+
+status.innerHTML =
+
+'<span class="error">' +
+
+"🔴 מקליט..."
+
++
+
+"</span>";
+
+
+}catch(error){
+
+console.error(error);
+
+status.innerHTML =
+
+'<span class="error">' +
+
+"❌ אין גישה למיקרופון"
+
++
+
+"</span>";
+
+}
+
+}
+
+
+/* =====================================================
+   חידון
+   ===================================================== */
+
+function newQuiz(){
+
+const quizWord =
+document.getElementById(
+"quizWord"
+);
+
+const answers =
+document.getElementById(
+"answers"
+);
+
+
+if(words.length < 2){
+
+quizWord.textContent =
+"צריך לפחות 2 מילים";
+
+answers.innerHTML="";
+
+return;
+
+}
+
+
+const correct =
+words[
+Math.floor(
+Math.random() *
+words.length
+)
+];
+
+
+quizWord.textContent =
+correct.baby_word;
+
+
+let choices=[
+correct
+];
+
+
+while(
+choices.length <
+Math.min(4,words.length)
+){
+
+const random =
+words[
+Math.floor(
+Math.random() *
+words.length
+)
+];
+
+
+if(
+!choices.some(function(item){
+
+return String(item.id) ===
+String(random.id);
+
+})
+){
+
+choices.push(random);
+
+}
+
+}
+
+
+choices.sort(function(){
+
+return Math.random()-0.5;
+
+});
+
+
+answers.innerHTML =
+choices.map(function(choice){
+
+return `
+
+<button
+class="answer"
+onclick="checkAnswer(
+'${escapeAttribute(choice.id)}',
+'${escapeAttribute(correct.id)}'
+)">
+
+${escapeHtml(choice.meaning)}
+
+</button>
+
+`;
+
+}).join("");
+
+}
+
+
+/* =====================================================
+   בדיקת תשובה
+   ===================================================== */
+
+function checkAnswer(
+selected,
+correct
+){
+
+if(
+String(selected) ===
+String(correct)
+){
+
+score += 10;
+
+
+document
+.getElementById("score")
+.textContent =
+score;
+
+
+updateBadge();
+
+
+alert(
+"🎉 נכון מאוד!"
+);
+
+}else{
+
+alert(
+"😅 כמעט! נסה שוב."
+);
+
+}
+
+
+newQuiz();
+
+}
+
+
+/* =====================================================
+   דרגה
+   ===================================================== */
+
+function updateBadge(){
+
+const badge =
+document.getElementById(
+"badge"
+);
+
+
+if(score >= 100){
+
+badge.textContent =
+"🏆 אלוף שפת התיילו!";
+
+}else if(score >= 50){
+
+badge.textContent =
+"🥇 מומחה תיילו!";
+
+}else if(score >= 20){
+
+badge.textContent =
+"⭐ מתקדם יפה!";
+
+}else{
+
+badge.textContent =
+"🍼 מתחילים";
+
+}
+
+}
+
+
+/* =====================================================
+   מעבר בין מסכים
+   ===================================================== */
+
+function showPage(
+id,
+button
+){
+
+document
+.querySelectorAll(".page")
+.forEach(function(page){
+
+page.classList.remove(
+"active"
+);
+
+});
+
+
+const target =
+document.getElementById(id);
+
+
+if(target){
+
+target.classList.add(
+"active"
+);
+
+}
+
+
+document
+.querySelectorAll(".tab")
+.forEach(function(tab){
+
+tab.classList.remove(
+"active"
+);
+
+});
+
+
+if(button){
+
+button.classList.add(
+"active"
+);
+
+}
+
+
+if(id==="quiz"){
+
+newQuiz();
+
+}
+
+}
+
+
+/* =====================================================
+   אבטחת טקסט
+   ===================================================== */
+
+function escapeHtml(value){
+
+return String(
+value ?? ""
+)
+
+.replace(
+/&/g,
+"&amp;"
+)
+
+.replace(
+/</g,
+"&lt;"
+)
+
+.replace(
+/>/g,
+"&gt;"
+)
+
+.replace(
+/"/g,
+"&quot;"
+)
+
+.replace(
+/'/g,
+"&#039;"
+);
+
+}
+
+
+function escapeAttribute(value){
+
+return String(
+value ?? ""
+)
+
+.replace(
+/&/g,
+"&amp;"
+)
+
+.replace(
+/"/g,
+"&quot;"
+)
+
+.replace(
+/'/g,
+"&#039;"
+)
+
+.replace(
+/</g,
+"&lt;"
+)
+
+.replace(
+/>/g,
+"&gt;"
+);
+
+}
+
+
+/* =====================================================
+   הפעלת האתר
+   ===================================================== */
+
+loadWords();
+
+</script>
+
+</body>
+</html>
